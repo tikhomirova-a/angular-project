@@ -1,1 +1,1 @@
-# angular-project
+# type-script-project
