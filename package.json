@@ -1,0 +1,11 @@
+{
+  "name": "type-script-project",
+  "version": "1.0.0",
+  "devDependencies": {
+    "typescript": "^4.7.4"
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "tsc --build --clean"
+  }
+}
