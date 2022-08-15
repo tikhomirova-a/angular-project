@@ -1,14 +1,18 @@
-const initialData: number[] = [1, 2, 3];
+type InitialData = number[];
+type UpdateFunction = (data: InitialData) => InitialData;
+type ListenerFunction = (data: InitialData) => void;
+
+const initialData: InitialData = [1, 2, 3];
 
 class Box {
-  constructor(data: number[]) {
+  constructor(data: InitialData) {
     this.data = data;
   }
 
-  private data: number[];
-  private listeners: Set<CallableFunction> = new Set();
+  private data: InitialData;
+  private listeners: Set<ListenerFunction> = new Set();
 
-  public listen(listenerCallback: CallableFunction): void {
+  public listen(listenerCallback: ListenerFunction): void {
     this.listeners.add(listenerCallback);
   }
 
@@ -16,7 +20,7 @@ class Box {
     this.listeners.forEach((listener) => listener(this.data));
   }
 
-  public update(someFunc: CallableFunction): void {
+  public update(someFunc: UpdateFunction): void {
     this.data = someFunc(this.data);
     this.callListeners();
   }
@@ -28,16 +32,13 @@ function makeBox(data: number[]): Box {
 
 const box1 = makeBox(initialData);
 
-box1.listen((data: number[]) => console.log("listener 1, data: " + data));
+box1.listen((data) => console.log("listener 1, data: " + data));
 
-box1.listen((data: number[]) => {
+box1.listen((data) => {
   const filteredData = data.filter((item) => item % 2);
-  console.log("listener 2, filteredData: ", filteredData);
+  console.log("listener 2, filteredData: " + filteredData);
 });
 
-box1.update((old: number[]) => {
-  old = old.concat([100, 101, 201])
-  return old;
-});
+box1.update((old) => old.concat([100, 101, 201]));
 
-box1.update((data: number[]) => data.copyWithin(1, 3));
+box1.update((data) => data.copyWithin(1, 3));
